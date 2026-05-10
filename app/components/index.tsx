@@ -146,6 +146,7 @@ const Main: FC<IMainProps> = () => {
             feedback: item.feedback,
             isAnswer: true,
             message_files: item.message_files?.filter((file: any) => file.belongs_to === 'assistant') || [],
+            suggestedQuestions: getChatList().find(c => c.id === item.id)?.suggestedQuestions || item.suggested_questions || [],
           })
         })
         setChatList(newChatList)

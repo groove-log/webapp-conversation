@@ -190,7 +190,10 @@ const Answer: FC<IAnswerProps> = ({
         </div>
         <div className={`${s.answerWrap} max-w-[calc(100%-3rem)]`}>
           <div className={`${s.answer} relative text-sm text-gray-900`}>
-            <div className={`ml-2 py-3 px-4 bg-white border border-gray-100 shadow-sm rounded-2xl rounded-tl-sm overflow-x-auto ${workflowProcess && 'min-w-[480px]'}`}>
+            <div className={`ml-2 relative group py-3 px-4 bg-white/70 backdrop-blur-md border border-white/40 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] rounded-2xl rounded-tl-sm overflow-x-auto transition-all duration-300 hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.08)] ${workflowProcess && 'min-w-[480px]'}`}>
+              {/* Vertical Accent Bar */}
+              <div className="absolute left-0 top-4 bottom-4 w-[3.5px] bg-gradient-to-b from-gs-blue to-gs-blue/40 rounded-r-full opacity-80 group-hover:opacity-100 transition-opacity"></div>
+              
               {workflowProcess && (
                 <WorkflowProcess data={workflowProcess} hideInfo />
               )}
@@ -203,7 +206,9 @@ const Answer: FC<IAnswerProps> = ({
                 : (isAgentMode
                   ? agentModeAnswer
                   : (
-                    <CustomRenderer content={content} onSend={suggestionClick} />
+                    <div className="pl-1">
+                      <CustomRenderer content={content} onSend={suggestionClick} />
+                    </div>
                   ))}
               {suggestedQuestions.length > 0 && (
                 <div className="mt-4 pt-4 border-t border-gray-50/50">

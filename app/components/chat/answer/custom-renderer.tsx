@@ -208,6 +208,19 @@ export const CustomRenderer: React.FC<CustomRendererProps> = ({ content, onSend 
                     </div>
                     <svg className="text-gray-400 group-hover:text-gs-green group-hover:translate-x-1 transition-all" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
                   </button>
+
+                  <div className="mt-2 p-4 bg-gray-50/50 rounded-xl border border-dashed border-gray-200">
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center gap-2 text-[13px] text-gray-700 font-medium">
+                        <span className="text-base">📞</span>
+                        <span>GS25 고객센터: <a href="tel:080-999-5425" className="text-gs-blue font-bold underline underline-offset-2">080-999-5425</a></span>
+                      </div>
+                      <div className="flex items-center gap-2 text-[13px] text-gray-700">
+                        <span className="text-base">⏰</span>
+                        <span>운영 시간: <span className="font-semibold text-gray-900">평일 09:00 ~ 18:00</span></span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

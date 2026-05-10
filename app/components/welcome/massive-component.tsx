@@ -12,14 +12,15 @@ import Button from '@/app/components/base/button'
 
 export const AppInfoComp: FC<{ siteInfo: AppInfo }> = ({ siteInfo }) => {
   return (
-    <div className='flex flex-col items-center justify-center text-center pb-8 pt-10'>
-      <div className='inline-flex items-center px-4 py-1.5 mb-6 text-xs font-bold tracking-widest text-white uppercase rounded-full bg-gradient-to-r from-gs-blue to-gs-green shadow-sm'>
+    <div className='flex flex-col items-center justify-center text-center pb-10 pt-16 animate-fade-in-up'>
+      <div className='inline-flex items-center px-4 py-1.5 mb-8 text-[11px] font-bold tracking-[0.2em] text-[#004bbb] bg-gradient-to-r from-blue-50 to-emerald-50 border border-[#004bbb]/20 rounded-full shadow-sm uppercase'>
+        <span className="w-2 h-2 mr-2 rounded-full bg-gradient-to-r from-[#004bbb] to-[#10b981] animate-pulse"></span>
         GS Retail Platform
       </div>
-      <h1 className='text-3xl font-extrabold tracking-tight text-gray-900 mb-4 sm:text-4xl'>
+      <h1 className='text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-gray-800 to-gray-600'>
         {siteInfo.title}
       </h1>
-      <p className='max-w-xl mx-auto text-lg text-gray-500'>
+      <p className='max-w-2xl mx-auto text-lg md:text-xl text-gray-500 leading-relaxed font-light'>
         {siteInfo.description}
       </p>
     </div>
@@ -51,13 +52,17 @@ export const ChatBtn: FC<{ onClick: () => void, className?: string }> = ({
   return (
     <Button
       type='primary'
-      className={cn(className, `space-x-2 flex items-center ${s.customBtn}`)}
+      className={cn(
+        'group relative flex items-center justify-center gap-3 w-full sm:w-auto min-w-[200px] px-8 py-4 bg-gradient-to-r from-[#004bbb] to-[#10b981] text-white text-lg font-semibold rounded-full shadow-xl shadow-blue-500/20 hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-all duration-300 overflow-hidden border-none',
+        className
+      )}
       onClick={onClick}
     >
-      <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fillRule="evenodd" clipRule="evenodd" d="M18 10.5C18 14.366 14.418 17.5 10 17.5C8.58005 17.506 7.17955 17.1698 5.917 16.52L2 17.5L3.338 14.377C2.493 13.267 2 11.934 2 10.5C2 6.634 5.582 3.5 10 3.5C14.418 3.5 18 6.634 18 10.5ZM7 9.5H5V11.5H7V9.5ZM15 9.5H13V11.5H15V9.5ZM9 9.5H11V11.5H9V9.5Z" fill="white" />
+      <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out rounded-full"></div>
+      <svg className="relative z-10 w-6 h-6 shrink-0" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fillRule="evenodd" clipRule="evenodd" d="M18 10.5C18 14.366 14.418 17.5 10 17.5C8.58005 17.506 7.17955 17.1698 5.917 16.52L2 17.5L3.338 14.377C2.493 13.267 2 11.934 2 10.5C2 6.634 5.582 3.5 10 3.5C14.418 3.5 18 6.634 18 10.5ZM7 9.5H5V11.5H7V9.5ZM15 9.5H13V11.5H15V9.5ZM9 9.5H11V11.5H9V9.5Z" fill="currentColor" />
       </svg>
-      {t('app.chat.startChat')}
+      <span className="relative z-10 whitespace-nowrap tracking-wide">{t('app.chat.startChat')}</span>
     </Button>
   )
 }

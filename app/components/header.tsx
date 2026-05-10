@@ -18,27 +18,29 @@ const Header: FC<IHeaderProps> = ({
   onCreateNewChat,
 }) => {
   return (
-    <div className="shrink-0 flex items-center justify-between h-14 px-4 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm z-10 sticky top-0">
+    <div className="shrink-0 flex items-center justify-between h-14 px-6 bg-white/70 backdrop-blur-xl border-b border-gray-100 shadow-[0_1px_2px_rgba(0,0,0,0.03)] z-50 sticky top-0 transition-all duration-300">
       {isMobile
         ? (
           <div
-            className='flex items-center justify-center h-8 w-8 cursor-pointer'
+            className='flex items-center justify-center h-9 w-9 cursor-pointer hover:bg-gray-50 rounded-xl transition-colors'
             onClick={() => onShowSideBar?.()}
           >
-            <Bars3Icon className="h-4 w-4 text-gray-500" />
+            <Bars3Icon className="h-5 w-5 text-gray-500" />
           </div>
         )
-        : <div></div>}
-      <div className='flex items-center space-x-2'>
-        <AppIcon size="small" />
-        <div className=" text-sm text-gray-800 font-bold">{title}</div>
+        : <div className="w-9"></div>}
+      <div className='flex items-center space-x-3'>
+        <div className="p-1 bg-white rounded-lg shadow-sm border border-gray-100">
+          <AppIcon size="small" />
+        </div>
+        <div className="text-base text-gray-900 font-extrabold tracking-tight">{title}</div>
       </div>
       {isMobile
         ? (
-          <div className='flex items-center justify-center h-8 w-8 cursor-pointer' onClick={() => onCreateNewChat?.()} >
-            <PencilSquareIcon className="h-4 w-4 text-gray-500" />
+          <div className='flex items-center justify-center h-9 w-9 cursor-pointer hover:bg-gray-50 rounded-xl transition-colors' onClick={() => onCreateNewChat?.()} >
+            <PencilSquareIcon className="h-5 w-5 text-gray-500" />
           </div>)
-        : <div></div>}
+        : <div className="w-9"></div>}
     </div>
   )
 }

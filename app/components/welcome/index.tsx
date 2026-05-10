@@ -207,37 +207,22 @@ const Welcome: FC<IWelcomeProps> = ({
   const renderNoVarPanel = () => {
     if (isPublicVersion) {
       return (
-        <div>
+        <div className="w-full flex flex-col items-center justify-center min-h-[60vh] -mt-10">
           <AppInfoComp siteInfo={siteInfo} />
-          <TemplateVarPanel
-            isFold={false}
-            header={
-              <>
-                <PanelTitle
-                  title={t('app.chat.publicPromptConfigTitle')}
-                  className='mb-1'
-                />
-                <PromptTemplate html={highLightPromoptTemplate} />
-              </>
-            }
-          >
+          <div className="flex justify-center w-full mt-2 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
             <ChatBtn onClick={handleChat} />
-          </TemplateVarPanel>
+          </div>
         </div>
       )
     }
     // private version
     return (
-      <TemplateVarPanel
-        isFold={false}
-        header={
-          <AppInfoComp siteInfo={siteInfo} />
-        }
-      >
-        <div className="flex justify-center w-full mt-6">
-          <ChatBtn className="px-8 py-3 rounded-full text-base shadow-md bg-gs-blue hover:bg-blue-600 transition-all border-none" onClick={handleChat} />
+      <div className="w-full flex flex-col items-center justify-center min-h-[60vh] -mt-10">
+        <AppInfoComp siteInfo={siteInfo} />
+        <div className="flex justify-center w-full mt-2 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+          <ChatBtn onClick={handleChat} />
         </div>
-      </TemplateVarPanel>
+      </div>
     )
   }
 

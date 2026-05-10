@@ -81,6 +81,11 @@ const ZendeskModal = () => {
                   window.parent.postMessage('zendesk-close', '*');
                 });
               } catch(e) {}
+              try {
+                zE('messenger:on', 'close', function() {
+                  window.parent.postMessage('zendesk-close', '*');
+                });
+              } catch(e) {}
             }, 300);
           }
           if (attempts > 50) clearInterval(poll);

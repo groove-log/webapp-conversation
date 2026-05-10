@@ -59,7 +59,7 @@ const Sidebar: FC<ISidebarProps> = ({
         <div className="flex flex-shrink-0 p-4 !pb-0">
           <Button
             onClick={() => { onCurrentIdChange('-1') }}
-            className="group block w-full flex-shrink-0 !justify-start !h-9 text-primary-600 items-center text-sm"
+            className="group block w-full flex-shrink-0 !justify-start !h-10 text-[#004bbb] bg-blue-50/30 hover:bg-blue-50 border border-blue-100/50 items-center text-sm font-bold rounded-xl transition-all duration-300"
           >
             <PencilSquareIcon className="mr-2 h-4 w-4" /> {t('app.chat.newChat')}
           </Button>
@@ -78,18 +78,18 @@ const Sidebar: FC<ISidebarProps> = ({
               key={item.id}
               className={classNames(
                 isCurrent
-                  ? 'bg-primary-50 text-primary-600'
-                  : 'text-gray-700 hover:bg-gray-100 hover:text-gray-700',
-                'group flex items-center justify-between rounded-md px-2 py-2 text-sm font-medium cursor-pointer',
+                  ? 'bg-blue-50/80 text-[#004bbb] border-l-[3px] border-[#004bbb] rounded-r-lg'
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 border-l-[3px] border-transparent',
+                'group flex items-center justify-between px-3 py-2.5 text-[13px] font-semibold cursor-pointer transition-all duration-200',
               )}
             >
               <div className="flex items-center min-w-0 flex-1">
                 <ItemIcon
                   className={classNames(
                     isCurrent
-                      ? 'text-primary-600'
+                      ? 'text-[#004bbb]'
                       : 'text-gray-400 group-hover:text-gray-500',
-                    'mr-3 h-5 w-5 flex-shrink-0',
+                    'mr-3 h-5 w-5 flex-shrink-0 transition-colors',
                   )}
                   aria-hidden="true"
                 />

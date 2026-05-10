@@ -176,20 +176,20 @@ const Chat: FC<IChatProps> = ({
       </div>
       {
         !isHideSendInput && (
-          <div className='fixed z-10 bottom-4 left-1/2 transform -translate-x-1/2 pc:ml-[122px] tablet:ml-[96px] mobile:ml-0 pc:w-[794px] tablet:w-[794px] max-w-full mobile:w-full px-3.5'>
-            <div className='p-[5.5px] max-h-[150px] bg-white/95 backdrop-blur-md border border-gray-200 shadow-lg rounded-2xl overflow-y-auto transition-all'>
+          <div className='fixed z-20 bottom-6 pc:left-[244px] tablet:left-[192px] mobile:left-0 right-0 flex justify-center px-4 transition-all duration-300'>
+            <div className='group p-[6px] max-h-[180px] w-full pc:max-w-[800px] tablet:max-w-[720px] bg-white/80 backdrop-blur-2xl border border-white/40 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.15)] rounded-[24px] overflow-visible transition-all duration-300 focus-within:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.2)] focus-within:border-white/60'>
               {
                 visionConfig?.enabled && (
                   <>
-                    <div className='absolute bottom-2 left-2 flex items-center'>
+                    <div className='absolute bottom-3 left-3 flex items-center'>
                       <ChatImageUploader
                         settings={visionConfig}
                         onUpload={onUpload}
                         disabled={files.length >= visionConfig.number_limits}
                       />
-                      <div className='mx-1 w-[1px] h-4 bg-black/5' />
+                      <div className='mx-2 w-[1px] h-5 bg-gray-200/50' />
                     </div>
-                    <div className='pl-[52px]'>
+                    <div className='pl-[56px]'>
                       <ImageList
                         list={files}
                         onRemove={onRemove}
@@ -203,7 +203,7 @@ const Chat: FC<IChatProps> = ({
               }
               {
                 fileConfig?.enabled && (
-                  <div className={`${visionConfig?.enabled ? 'pl-[52px]' : ''} mb-1`}>
+                  <div className={`${visionConfig?.enabled ? 'pl-[56px]' : ''} mb-1 px-2`}>
                     <FileUploaderInAttachmentWrapper
                       fileConfig={fileConfig}
                       value={attachmentFiles}
@@ -212,30 +212,49 @@ const Chat: FC<IChatProps> = ({
                   </div>
                 )
               }
-              <Textarea
-                className={`
-                  block w-full px-3 pr-[118px] py-[7px] leading-6 max-h-none text-base text-gray-800 outline-none appearance-none resize-none bg-transparent
-                  ${visionConfig?.enabled && 'pl-12'}
-                `}
-                value={query}
-                onChange={handleContentChange}
-                onKeyUp={handleKeyUp}
-                onKeyDown={handleKeyDown}
-                autoSize
-              />
-              <div className="absolute bottom-2 right-4 flex items-center h-8">
-                <div className={`${s.count} mr-3 h-5 leading-5 text-sm bg-gray-100 text-gray-500 px-2 rounded-full font-medium`}>{query.trim().length}</div>
-                <Tooltip
-                  selector='send-tip'
-                  htmlContent={
-                    <div>
-                      <div>{t('common.operation.send')} Enter</div>
-                      <div>{t('common.operation.lineBreak')} Shift Enter</div>
-                    </div>
-                  }
-                >
-                  <div className={`${s.sendBtn} w-8 h-8 cursor-pointer rounded-lg bg-gradient-to-r from-gs-blue to-gs-green hover:opacity-90 shadow-sm transition-all`} onClick={handleSend}></div>
-                </Tooltip>
+              <div className="flex items-end gap-2 px-1">
+                <Textarea
+                  className={`
+                    block w-full px-4 py-2.5 leading-relaxed max-h-[140px] text-[16px] text-gray-800 outline-none appearance-none resize-none bg-transparent placeholder:text-gray-400
+                    ${visionConfig?.enabled && 'pl-12'}
+                  `}
+                  placeholder="무엇이 궁금하세요?"
+                  value={query}
+                  onChange={handleContentChange}
+                  onKeyUp={handleKeyUp}
+                  onKeyDown={handleKeyDown}
+                  autoSize
+                />
+                <div className="flex items-center gap-2 pb-1.5 pr-2">
+                  <div className="text-[11px] font-bold text-gray-400 bg-gray-50/50 px-2 py-0.5 rounded-full border border-gray-100/50">
+                    {query.trim().length}
+                  </div>
+                  <Tooltip
+                    selector='send-tip'
+                    htmlContent={
+                      <div className="text-xs p-1">
+                        <div className="font-bold border-b border-white/20 pb-1 mb-1">{t('common.operation.send')} Enter</div>
+                        <div className="opacity-80">{t('common.operation.lineBreak')} Shift + Enter</div>
+                      </div>
+                    }
+                  >
+                    <button
+                      className={cn(
+                        'flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300 shadow-md hover:shadow-lg active:scale-95',
+                        query.trim() 
+                          ? 'bg-gradient-to-r from-[#004bbb] to-[#10b981] text-white' 
+                          : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      )}
+                      onClick={handleSend}
+                      disabled={!query.trim()}
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                      </svg>
+                    </button>
+                  </Tooltip>
+                </div>
               </div>
             </div>
           </div>
