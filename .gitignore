@@ -49,5 +49,14 @@ yarn.lock
 
 # mcp
 .serena
-# pmpm
+# pnpm
 pnpm-lock.yaml
+.pnpm-store/
+pnpm-workspace.yaml
+
+# stackflow
+.stackflow*
+
+# docker
+docker-compose*.yml
+.dockerignore
