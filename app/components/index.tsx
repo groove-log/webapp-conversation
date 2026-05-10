@@ -9,7 +9,7 @@ import Toast from '@/app/components/base/toast'
 import Sidebar from '@/app/components/sidebar'
 import ConfigSence from '@/app/components/config-scence'
 import Header from '@/app/components/header'
-import { fetchAppParams, fetchChatList, fetchConversations, generationConversationName, sendChatMessage, updateFeedback } from '@/service'
+import { deleteConversation, fetchAppInfo, fetchAppParams, fetchChatList, fetchConversations, fetchSuggestedQuestions, generationConversationName, sendChatMessage, updateFeedback } from '@/service'
 import type { ChatItem, ConversationItem, Feedbacktype, PromptConfig, VisionFile, VisionSettings } from '@/types/app'
 import type { FileUpload } from '@/app/components/base/file-uploader-in-attachment/types'
 import { Resolution, TransferMethod, WorkflowRunningStatus } from '@/types/app'
@@ -40,6 +40,7 @@ const Main: FC<IMainProps> = () => {
   const [isUnknownReason, setIsUnknownReason] = useState<boolean>(false)
   const [promptConfig, setPromptConfig] = useState<PromptConfig | null>(null)
   const [inited, setInited] = useState<boolean>(false)
+  const [appTitle, setAppTitle] = useState<string>(APP_INFO.title)
   // in mobile, show sidebar by click button
   const [isShowSidebar, { setTrue: showSidebar, setFalse: hideSidebar }] = useBoolean(false)
   const [visionConfig, setVisionConfig] = useState<VisionSettings | undefined>({
@@ -51,8 +52,8 @@ const Main: FC<IMainProps> = () => {
   const [fileConfig, setFileConfig] = useState<FileUpload | undefined>()
 
   useEffect(() => {
-    if (APP_INFO?.title) { document.title = `${APP_INFO.title} - Powered by Dify` }
-  }, [APP_INFO?.title])
+    if (appTitle) { document.title = `${appTitle} - Powered by GS Retail AX` }
+  }, [appTitle])
 
   // onData change thought (the produce obj). https://github.com/immerjs/immer/issues/576
   useEffect(() => {
@@ -228,7 +229,10 @@ const Main: FC<IMainProps> = () => {
     }
     (async () => {
       try {
-        const [conversationData, appParams] = await Promise.all([fetchConversations(), fetchAppParams()])
+        const [conversationData, appParams, appInfo] = await Promise.all([fetchConversations(), fetchAppParams(), fetchAppInfo()])
+        if (appInfo && (appInfo as any).title) {
+          setAppTitle((appInfo as any).title)
+        }
         // handle current conversation id
         const { data: conversations, error } = conversationData as { data: ConversationItem[], error: string }
         if (error) {
@@ -461,6 +465,24 @@ const Main: FC<IMainProps> = () => {
       async onCompleted(hasError?: boolean) {
         if (hasError) { return }
 
+        // Fetch suggested questions if they weren't in the stream
+        if (responseItem.id && (!responseItem.suggestedQuestions || responseItem.suggestedQuestions.length === 0)) {
+          try {
+            const { data: suggestedQuestionsData }: any = await fetchSuggestedQuestions(responseItem.id)
+            if (suggestedQuestionsData && suggestedQuestionsData.length > 0) {
+              const newListWithSuggested = produce(getChatList(), (draft) => {
+                const item = draft.find(i => i.id === responseItem.id)
+                if (item) {
+                  item.suggestedQuestions = suggestedQuestionsData
+                }
+              })
+              setChatList(newListWithSuggested)
+            }
+          } catch (e) {
+            console.error('Failed to fetch suggested questions:', e)
+          }
+        }
+
         if (getConversationIdChangeBecauseOfNew()) {
           const { data: allConversations }: any = await fetchConversations()
           const newItem: any = await generationConversationName(allConversations[0].id)
@@ -524,6 +546,10 @@ const Main: FC<IMainProps> = () => {
         })
       },
       onMessageEnd: (messageEnd) => {
+        if (messageEnd.metadata?.suggested_questions) {
+          responseItem.suggestedQuestions = messageEnd.metadata.suggested_questions
+        }
+
         if (messageEnd.metadata?.annotation_reply) {
           responseItem.id = messageEnd.id
           responseItem.annotation = ({
@@ -636,14 +662,36 @@ const Main: FC<IMainProps> = () => {
     notify({ type: 'success', message: t('common.api.success') })
   }
 
+  const handleDeleteConversation = async (id: string) => {
+    try {
+      await deleteConversation(id)
+      const newList = conversationList.filter(item => item.id !== id)
+      setConversationList(newList)
+      if (currConversationId === id) {
+        // Switch to another conversation or create new
+        if (newList.length > 0) {
+          setCurrConversationId(newList[0].id, APP_ID)
+        }
+        else {
+          handleConversationIdChange('-1')
+        }
+      }
+      notify({ type: 'success', message: '대화가 삭제되었습니다.' })
+    }
+    catch (e) {
+      notify({ type: 'error', message: '대화 삭제에 실패했습니다.' })
+    }
+  }
+
   const renderSidebar = () => {
     if (!APP_ID || !APP_INFO || !promptConfig) { return null }
     return (
       <Sidebar
         list={conversationList}
         onCurrentIdChange={handleConversationIdChange}
+        onDeleteConversation={handleDeleteConversation}
         currentId={currConversationId}
-        copyRight={APP_INFO.copyright || APP_INFO.title}
+        copyRight={APP_INFO.copyright || appTitle}
       />
     )
   }
@@ -653,14 +701,14 @@ const Main: FC<IMainProps> = () => {
   if (!APP_ID || !APP_INFO || !promptConfig) { return <Loading type='app' /> }
 
   return (
-    <div className='bg-gray-100'>
+    <div className='bg-gray-50 flex flex-col h-screen overflow-hidden'>
       <Header
-        title={APP_INFO.title}
+        title={appTitle}
         isMobile={isMobile}
         onShowSideBar={showSidebar}
         onCreateNewChat={() => handleConversationIdChange('-1')}
       />
-      <div className="flex rounded-t-2xl bg-white overflow-hidden">
+      <div className="flex flex-1 overflow-hidden">
         {/* sidebar */}
         {!isMobile && renderSidebar()}
         {isMobile && isShowSidebar && (
@@ -671,7 +719,7 @@ const Main: FC<IMainProps> = () => {
           </div>
         )}
         {/* main */}
-        <div className='flex-grow flex flex-col h-[calc(100vh_-_3rem)] overflow-y-auto'>
+        <div className='flex-1 flex flex-col h-full overflow-y-auto bg-[#F4F6F8] rounded-tl-2xl shadow-inner border-t border-l border-gray-200'>
           <ConfigSence
             conversationName={conversationName}
             hasSetInputs={hasSetInputs}

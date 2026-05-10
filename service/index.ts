@@ -1,5 +1,5 @@
 import type { IOnCompleted, IOnData, IOnError, IOnFile, IOnMessageEnd, IOnMessageReplace, IOnNodeFinished, IOnNodeStarted, IOnThought, IOnWorkflowFinished, IOnWorkflowStarted } from './base'
-import { get, post, ssePost } from './base'
+import { del, get, post, ssePost } from './base'
 import type { Feedbacktype } from '@/types/app'
 
 export const sendChatMessage = async (
@@ -53,10 +53,22 @@ export const fetchAppParams = async () => {
   return get('parameters')
 }
 
+export const fetchAppInfo = async () => {
+  return get('info')
+}
+
 export const updateFeedback = async ({ url, body }: { url: string, body: Feedbacktype }) => {
   return post(url, { body })
 }
 
 export const generationConversationName = async (id: string) => {
   return post(`conversations/${id}/name`, { body: { auto_generate: true } })
+}
+
+export const fetchSuggestedQuestions = async (messageId: string) => {
+  return get(`messages/${messageId}/suggested`)
+}
+
+export const deleteConversation = async (conversationId: string) => {
+  return del(`conversations/${conversationId}`)
 }

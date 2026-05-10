@@ -21,9 +21,9 @@ Config more in `config/index.ts` file:
 export const APP_INFO: AppInfo = {
   title: 'Chat APP',
   description: '',
-  copyright: '',
+  copyright: 'GS Retail AX',
   privacy_policy: '',
-  default_language: 'zh-Hans'
+  default_language: 'ko'
 }
 
 export const isShowPrompt = true

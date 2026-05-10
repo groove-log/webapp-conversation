@@ -114,6 +114,7 @@ export interface MessageEnd {
         name: string
       }
     }
+    suggested_questions?: string[]
   }
 }
 

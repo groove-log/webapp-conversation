@@ -3,6 +3,17 @@ import { getLocaleOnServer } from '@/i18n/server'
 import './styles/globals.css'
 import './styles/markdown.scss'
 
+export const metadata = {
+  title: 'GS Retail AX',
+  description: 'GS Retail AX AI Chat Platform',
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+  },
+}
+
+import ZendeskModal from '@/app/components/zendesk-modal'
+
 const LocaleLayout = async ({
   children,
 }: {
@@ -17,6 +28,7 @@ const LocaleLayout = async ({
             {children}
           </div>
         </div>
+        <ZendeskModal />
       </body>
     </html>
   )

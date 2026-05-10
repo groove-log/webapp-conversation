@@ -1,11 +1,11 @@
 import type { AppInfo } from '@/types/app'
-export const APP_ID = `${process.env.NEXT_PUBLIC_APP_ID}`
-export const API_KEY = `${process.env.NEXT_PUBLIC_APP_KEY}`
-export const API_URL = `${process.env.NEXT_PUBLIC_API_URL}`
+export const APP_ID = process.env.APP_ID || process.env.NEXT_PUBLIC_APP_ID || 'runtime-app-id'
+export const API_KEY = process.env.APP_KEY || process.env.NEXT_PUBLIC_APP_KEY || 'runtime-api-key'
+export const API_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || ''
 export const APP_INFO: AppInfo = {
-  title: 'Chat APP',
+  title: 'GS리테일 상담봇',
   description: '',
-  copyright: '',
+  copyright: 'GS Retail AX',
   privacy_policy: '',
   default_language: 'en',
   disable_session_same_site: false, // set it to true if you want to embed the chatbot in an iframe

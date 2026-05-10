@@ -176,8 +176,8 @@ const Chat: FC<IChatProps> = ({
       </div>
       {
         !isHideSendInput && (
-          <div className='fixed z-10 bottom-0 left-1/2 transform -translate-x-1/2 pc:ml-[122px] tablet:ml-[96px] mobile:ml-0 pc:w-[794px] tablet:w-[794px] max-w-full mobile:w-full px-3.5'>
-            <div className='p-[5.5px] max-h-[150px] bg-white border-[1.5px] border-gray-200 rounded-xl overflow-y-auto'>
+          <div className='fixed z-10 bottom-4 left-1/2 transform -translate-x-1/2 pc:ml-[122px] tablet:ml-[96px] mobile:ml-0 pc:w-[794px] tablet:w-[794px] max-w-full mobile:w-full px-3.5'>
+            <div className='p-[5.5px] max-h-[150px] bg-white/95 backdrop-blur-md border border-gray-200 shadow-lg rounded-2xl overflow-y-auto transition-all'>
               {
                 visionConfig?.enabled && (
                   <>
@@ -214,7 +214,7 @@ const Chat: FC<IChatProps> = ({
               }
               <Textarea
                 className={`
-                  block w-full px-2 pr-[118px] py-[7px] leading-5 max-h-none text-base text-gray-700 outline-none appearance-none resize-none
+                  block w-full px-3 pr-[118px] py-[7px] leading-6 max-h-none text-base text-gray-800 outline-none appearance-none resize-none bg-transparent
                   ${visionConfig?.enabled && 'pl-12'}
                 `}
                 value={query}
@@ -223,8 +223,8 @@ const Chat: FC<IChatProps> = ({
                 onKeyDown={handleKeyDown}
                 autoSize
               />
-              <div className="absolute bottom-2 right-6 flex items-center h-8">
-                <div className={`${s.count} mr-3 h-5 leading-5 text-sm bg-gray-50 text-gray-500 px-2 rounded`}>{query.trim().length}</div>
+              <div className="absolute bottom-2 right-4 flex items-center h-8">
+                <div className={`${s.count} mr-3 h-5 leading-5 text-sm bg-gray-100 text-gray-500 px-2 rounded-full font-medium`}>{query.trim().length}</div>
                 <Tooltip
                   selector='send-tip'
                   htmlContent={
@@ -234,7 +234,7 @@ const Chat: FC<IChatProps> = ({
                     </div>
                   }
                 >
-                  <div className={`${s.sendBtn} w-8 h-8 cursor-pointer rounded-md`} onClick={handleSend}></div>
+                  <div className={`${s.sendBtn} w-8 h-8 cursor-pointer rounded-lg bg-gradient-to-r from-gs-blue to-gs-green hover:opacity-90 shadow-sm transition-all`} onClick={handleSend}></div>
                 </Tooltip>
               </div>
             </div>

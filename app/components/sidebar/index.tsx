@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   ChatBubbleOvalLeftEllipsisIcon,
   PencilSquareIcon,
+  TrashIcon,
 } from '@heroicons/react/24/outline'
 import { ChatBubbleOvalLeftEllipsisIcon as ChatBubbleOvalLeftEllipsisSolidIcon } from '@heroicons/react/24/solid'
 import Button from '@/app/components/base/button'
-// import Card from './card'
 import type { ConversationItem } from '@/types/app'
 
 function classNames(...classes: any[]) {
@@ -20,6 +20,7 @@ export interface ISidebarProps {
   copyRight: string
   currentId: string
   onCurrentIdChange: (id: string) => void
+  onDeleteConversation?: (id: string) => void
   list: ConversationItem[]
 }
 
@@ -27,9 +28,29 @@ const Sidebar: FC<ISidebarProps> = ({
   copyRight,
   currentId,
   onCurrentIdChange,
+  onDeleteConversation,
   list,
 }) => {
   const { t } = useTranslation()
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null)
+
+  const handleDeleteClick = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation()
+    if (id === '-1') return // Don't delete unsaved new chats
+    setConfirmDeleteId(id)
+  }
+
+  const handleConfirmDelete = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation()
+    onDeleteConversation?.(id)
+    setConfirmDeleteId(null)
+  }
+
+  const handleCancelDelete = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setConfirmDeleteId(null)
+  }
+
   return (
     <div
       className="shrink-0 flex flex-col overflow-y-auto bg-white pc:w-[244px] tablet:w-[192px] mobile:w-[240px]  border-r border-gray-200 tablet:h-[calc(100vh_-_3rem)] mobile:h-screen"
@@ -48,6 +69,7 @@ const Sidebar: FC<ISidebarProps> = ({
       <nav className="mt-4 flex-1 space-y-1 bg-white p-4 !pt-0">
         {list.map((item) => {
           const isCurrent = item.id === currentId
+          const isConfirming = confirmDeleteId === item.id
           const ItemIcon
             = isCurrent ? ChatBubbleOvalLeftEllipsisSolidIcon : ChatBubbleOvalLeftEllipsisIcon
           return (
@@ -58,26 +80,53 @@ const Sidebar: FC<ISidebarProps> = ({
                 isCurrent
                   ? 'bg-primary-50 text-primary-600'
                   : 'text-gray-700 hover:bg-gray-100 hover:text-gray-700',
-                'group flex items-center rounded-md px-2 py-2 text-sm font-medium cursor-pointer',
+                'group flex items-center justify-between rounded-md px-2 py-2 text-sm font-medium cursor-pointer',
               )}
             >
-              <ItemIcon
-                className={classNames(
-                  isCurrent
-                    ? 'text-primary-600'
-                    : 'text-gray-400 group-hover:text-gray-500',
-                  'mr-3 h-5 w-5 flex-shrink-0',
-                )}
-                aria-hidden="true"
-              />
-              {item.name}
+              <div className="flex items-center min-w-0 flex-1">
+                <ItemIcon
+                  className={classNames(
+                    isCurrent
+                      ? 'text-primary-600'
+                      : 'text-gray-400 group-hover:text-gray-500',
+                    'mr-3 h-5 w-5 flex-shrink-0',
+                  )}
+                  aria-hidden="true"
+                />
+                <span className="truncate">{item.name}</span>
+              </div>
+              {item.id !== '-1' && (
+                isConfirming ? (
+                  <div className="flex items-center gap-1 ml-1 flex-shrink-0">
+                    <button
+                      className="p-0.5 rounded text-red-500 hover:bg-red-50 transition-colors text-xs font-bold"
+                      onClick={(e) => handleConfirmDelete(e, item.id)}
+                      title="삭제 확인"
+                    >
+                      ✓
+                    </button>
+                    <button
+                      className="p-0.5 rounded text-gray-400 hover:bg-gray-100 transition-colors text-xs font-bold"
+                      onClick={handleCancelDelete}
+                      title="취소"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    className="p-1 rounded opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all flex-shrink-0"
+                    onClick={(e) => handleDeleteClick(e, item.id)}
+                    title="대화 삭제"
+                  >
+                    <TrashIcon className="h-4 w-4" />
+                  </button>
+                )
+              )}
             </div>
           )
         })}
       </nav>
-      {/* <a className="flex flex-shrink-0 p-4" href="https://langgenius.ai/" target="_blank">
-        <Card><div className="flex flex-row items-center"><ChatBubbleOvalLeftEllipsisSolidIcon className="text-primary-600 h-6 w-6 mr-2" /><span>LangGenius</span></div></Card>
-      </a> */}
       <div className="flex flex-shrink-0 pr-4 pb-4 pl-4">
         <div className="text-gray-400 font-normal text-xs">© {copyRight} {(new Date()).getFullYear()}</div>
       </div>

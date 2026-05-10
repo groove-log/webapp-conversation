@@ -11,11 +11,17 @@ import type { AppInfo } from '@/types/app'
 import Button from '@/app/components/base/button'
 
 export const AppInfoComp: FC<{ siteInfo: AppInfo }> = ({ siteInfo }) => {
-  const { t } = useTranslation()
   return (
-    <div>
-      <div className='flex items-center py-2 text-xl font-medium text-gray-700 rounded-md'>👏 {t('app.common.welcome')} {siteInfo.title}</div>
-      <p className='text-sm text-gray-500'>{siteInfo.description}</p>
+    <div className='flex flex-col items-center justify-center text-center pb-8 pt-10'>
+      <div className='inline-flex items-center px-4 py-1.5 mb-6 text-xs font-bold tracking-widest text-white uppercase rounded-full bg-gradient-to-r from-gs-blue to-gs-green shadow-sm'>
+        GS Retail Platform
+      </div>
+      <h1 className='text-3xl font-extrabold tracking-tight text-gray-900 mb-4 sm:text-4xl'>
+        {siteInfo.title}
+      </h1>
+      <p className='max-w-xl mx-auto text-lg text-gray-500'>
+        {siteInfo.description}
+      </p>
     </div>
   )
 }

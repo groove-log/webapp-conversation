@@ -234,7 +234,9 @@ const Welcome: FC<IWelcomeProps> = ({
           <AppInfoComp siteInfo={siteInfo} />
         }
       >
-        <ChatBtn onClick={handleChat} />
+        <div className="flex justify-center w-full mt-6">
+          <ChatBtn className="px-8 py-3 rounded-full text-base shadow-md bg-gs-blue hover:bg-blue-600 transition-all border-none" onClick={handleChat} />
+        </div>
       </TemplateVarPanel>
     )
   }
@@ -387,10 +389,10 @@ const Welcome: FC<IWelcomeProps> = ({
               </div>
               : <div>
               </div>}
-            <a className='flex items-center pr-3 space-x-3' href="https://dify.ai/" target="_blank">
+            <div className='flex items-center pr-3 space-x-3'>
               <span className='uppercase'>{t('app.chat.powerBy')}</span>
-              <FootLogo />
-            </a>
+              <span className="font-bold text-gray-700">GS Retail AX</span>
+            </div>
           </div>
         )}
       </div>

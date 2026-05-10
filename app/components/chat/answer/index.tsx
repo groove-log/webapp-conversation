@@ -11,6 +11,7 @@ import StreamdownMarkdown from '@/app/components/base/streamdown-markdown'
 import Tooltip from '@/app/components/base/tooltip'
 import WorkflowProcess from '@/app/components/workflow/workflow-process'
 import { randomString } from '@/utils/string'
+import { CustomRenderer } from './custom-renderer'
 import ImageGallery from '../../base/image-gallery'
 import LoadingAnim from '../loading-anim'
 import s from '../style.module.css'
@@ -189,7 +190,7 @@ const Answer: FC<IAnswerProps> = ({
         </div>
         <div className={`${s.answerWrap} max-w-[calc(100%-3rem)]`}>
           <div className={`${s.answer} relative text-sm text-gray-900`}>
-            <div className={`ml-2 py-3 px-4 bg-gray-100 rounded-tr-2xl rounded-b-2xl ${workflowProcess && 'min-w-[480px]'}`}>
+            <div className={`ml-2 py-3 px-4 bg-white border border-gray-100 shadow-sm rounded-2xl rounded-tl-sm overflow-x-auto ${workflowProcess && 'min-w-[480px]'}`}>
               {workflowProcess && (
                 <WorkflowProcess data={workflowProcess} hideInfo />
               )}
@@ -202,15 +203,23 @@ const Answer: FC<IAnswerProps> = ({
                 : (isAgentMode
                   ? agentModeAnswer
                   : (
-                    <StreamdownMarkdown content={content} />
+                    <CustomRenderer content={content} onSend={suggestionClick} />
                   ))}
               {suggestedQuestions.length > 0 && (
-                <div className="mt-3">
-                  <div className="flex gap-1 mt-1 flex-wrap">
+                <div className="mt-4 pt-4 border-t border-gray-50/50">
+                  <div className="flex items-center gap-1.5 mb-3">
+                    <div className="w-1 h-3.5 bg-gs-blue rounded-full"></div>
+                    <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">추천 질문</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
                     {suggestedQuestions.map((suggestion, index) => (
-                      <div key={index} className="flex items-center gap-1">
-                        <Button className="text-sm" type="link" onClick={() => suggestionClick(suggestion)}>{suggestion}</Button>
-                      </div>
+                      <button
+                        key={index}
+                        className="px-4 py-2 bg-white hover:bg-gs-blue/5 text-gray-700 hover:text-gs-blue text-sm font-semibold rounded-xl border border-gray-100 hover:border-gs-blue/20 transition-all duration-300 shadow-sm hover:shadow-md"
+                        onClick={() => suggestionClick(suggestion)}
+                      >
+                        {suggestion}
+                      </button>
                     ))}
                   </div>
                 </div>
