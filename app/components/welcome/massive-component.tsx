@@ -10,11 +10,21 @@ import s from './style.module.css'
 import type { AppInfo } from '@/types/app'
 import Button from '@/app/components/base/button'
 
-export const AppInfoComp: FC<{ siteInfo: AppInfo }> = ({ siteInfo }) => {
+export const AppInfoComp: FC<{ siteInfo: AppInfo, theme?: string }> = ({ siteInfo, theme }) => {
   return (
     <div className='flex flex-col items-center justify-center text-center pb-10 pt-16 animate-fade-in-up'>
-      <div className='inline-flex items-center px-4 py-1.5 mb-8 text-[11px] font-bold tracking-[0.2em] text-[#004bbb] bg-gradient-to-r from-blue-50 to-emerald-50 border border-[#004bbb]/20 rounded-full shadow-sm uppercase'>
-        <span className="w-2 h-2 mr-2 rounded-full bg-gradient-to-r from-[#004bbb] to-[#10b981] animate-pulse"></span>
+      <div className={cn(
+        'inline-flex items-center px-4 py-1.5 mb-8 text-[11px] font-bold tracking-[0.2em] rounded-full shadow-sm uppercase border',
+        theme === 'super' ? 'text-[#004F34] bg-emerald-50 border-[#004F34]/20' :
+        theme === 'customer' ? 'text-[#00D0F1] bg-cyan-50 border-[#00D0F1]/20' :
+        'text-[#004bbb] bg-blue-50 border-[#004bbb]/20'
+      )}>
+        <span className={cn(
+          "w-2 h-2 mr-2 rounded-full animate-pulse",
+          theme === 'super' ? "bg-[#004F34]" :
+          theme === 'customer' ? "bg-[#00D0F1]" :
+          "bg-[#004bbb]"
+        )}></span>
         GS Retail Platform
       </div>
       <h1 className='text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-gray-800 to-gray-600'>
@@ -44,16 +54,20 @@ export const StarIcon = () => (
   </svg>
 )
 
-export const ChatBtn: FC<{ onClick: () => void, className?: string }> = ({
+export const ChatBtn: FC<{ onClick: () => void, className?: string, theme?: string }> = ({
   className,
   onClick,
+  theme,
 }) => {
   const { t } = useTranslation()
   return (
     <Button
       type='primary'
       className={cn(
-        'group relative flex items-center justify-center gap-3 w-full sm:w-auto min-w-[200px] px-8 py-4 bg-gradient-to-r from-[#004bbb] to-[#10b981] text-white text-lg font-semibold rounded-full shadow-xl shadow-blue-500/20 hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-all duration-300 overflow-hidden border-none',
+        'group relative flex items-center justify-center gap-3 w-full sm:w-auto min-w-[260px] px-12 py-6 text-white text-xl font-bold rounded-full shadow-2xl hover:-translate-y-1 transition-all duration-300 overflow-hidden border-none',
+        theme === 'super' ? 'bg-gradient-to-r from-[#004F34] to-[#008C38] shadow-[#004F34]/20 hover:shadow-[#004F34]/40' :
+        theme === 'customer' ? 'bg-gradient-to-r from-[#00D0F1] to-[#00B5AD] shadow-[#00D0F1]/20 hover:shadow-[#00D0F1]/40' :
+        'bg-gradient-to-r from-[#004bbb] to-[#10b981] shadow-blue-500/20 hover:shadow-blue-500/40',
         className
       )}
       onClick={onClick}

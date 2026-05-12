@@ -19,6 +19,7 @@ export interface IWelcomeProps {
   hasSetInputs: boolean
   isPublicVersion: boolean
   siteInfo: AppInfo
+  theme?: 'default' | 'super' | 'customer'
   promptConfig: PromptConfig
   onStartChat: (inputs: Record<string, any>) => void
   canEditInputs: boolean
@@ -31,6 +32,7 @@ const Welcome: FC<IWelcomeProps> = ({
   hasSetInputs,
   isPublicVersion,
   siteInfo,
+  theme = 'default',
   promptConfig,
   onStartChat,
   canEditInputs,
@@ -208,9 +210,9 @@ const Welcome: FC<IWelcomeProps> = ({
     if (isPublicVersion) {
       return (
         <div className="w-full flex flex-col items-center justify-center min-h-[60vh] -mt-10">
-          <AppInfoComp siteInfo={siteInfo} />
+          <AppInfoComp siteInfo={siteInfo} theme={theme} />
           <div className="flex justify-center w-full mt-2 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-            <ChatBtn onClick={handleChat} />
+            <ChatBtn onClick={handleChat} theme={theme} />
           </div>
         </div>
       )
@@ -218,9 +220,9 @@ const Welcome: FC<IWelcomeProps> = ({
     // private version
     return (
       <div className="w-full flex flex-col items-center justify-center min-h-[60vh] -mt-10">
-        <AppInfoComp siteInfo={siteInfo} />
+        <AppInfoComp siteInfo={siteInfo} theme={theme} />
         <div className="flex justify-center w-full mt-2 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-          <ChatBtn onClick={handleChat} />
+          <ChatBtn onClick={handleChat} theme={theme} />
         </div>
       </div>
     )
@@ -231,13 +233,14 @@ const Welcome: FC<IWelcomeProps> = ({
       <TemplateVarPanel
         isFold={false}
         header={
-          <AppInfoComp siteInfo={siteInfo} />
+          <AppInfoComp siteInfo={siteInfo} theme={theme} />
         }
       >
         {renderInputs()}
         <ChatBtn
           className='mt-3 mobile:ml-0 tablet:ml-[128px]'
           onClick={handleChat}
+          theme={theme}
         />
       </TemplateVarPanel>
     )

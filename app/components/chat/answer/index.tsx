@@ -1,5 +1,6 @@
 'use client'
 import type { FC } from 'react'
+import cn from 'classnames'
 import type { FeedbackFunc } from '../type'
 import type { ChatItem, MessageRating, VisionFile } from '@/types/app'
 import type { Emoji } from '@/types/tools'
@@ -66,6 +67,7 @@ const IconWrapper: FC<{ children: React.ReactNode | string }> = ({ children }) =
 
 interface IAnswerProps {
   item: ChatItem
+  theme?: 'default' | 'super' | 'customer'
   feedbackDisabled: boolean
   onFeedback?: FeedbackFunc
   isResponding?: boolean
@@ -76,6 +78,7 @@ interface IAnswerProps {
 // The component needs to maintain its own state to control whether to display input component
 const Answer: FC<IAnswerProps> = ({
   item,
+  theme = 'default',
   feedbackDisabled = false,
   onFeedback,
   isResponding,
@@ -192,7 +195,14 @@ const Answer: FC<IAnswerProps> = ({
           <div className={`${s.answer} relative text-sm text-gray-900`}>
             <div className={`ml-2 relative group py-3 px-4 bg-white/70 backdrop-blur-md border border-white/40 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] rounded-2xl rounded-tl-sm overflow-x-auto transition-all duration-300 hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.08)] ${workflowProcess && 'min-w-[480px]'}`}>
               {/* Vertical Accent Bar */}
-              <div className="absolute left-0 top-4 bottom-4 w-[3.5px] bg-gradient-to-b from-gs-blue to-gs-blue/40 rounded-r-full opacity-80 group-hover:opacity-100 transition-opacity"></div>
+              <div className={cn(
+                'absolute left-0 top-4 bottom-4 w-[3.5px] rounded-r-full opacity-80 group-hover:opacity-100 transition-opacity',
+                theme === 'super' 
+                  ? 'bg-gradient-to-b from-[#004F34] to-[#008C38]/40' 
+                  : theme === 'customer'
+                    ? 'bg-gradient-to-b from-[#00D0F1] to-[#00B5AD]/40'
+                    : 'bg-gradient-to-b from-gs-blue to-gs-blue/40'
+              )}></div>
               
               {workflowProcess && (
                 <WorkflowProcess data={workflowProcess} hideInfo />
@@ -207,20 +217,30 @@ const Answer: FC<IAnswerProps> = ({
                   ? agentModeAnswer
                   : (
                     <div className="pl-1">
-                      <CustomRenderer content={content} onSend={suggestionClick} />
+                      <CustomRenderer content={content} onSend={suggestionClick} theme={theme} />
                     </div>
                   ))}
               {suggestedQuestions.length > 0 && (
                 <div className="mt-4 pt-4 border-t border-gray-50/50">
                   <div className="flex items-center gap-1.5 mb-3">
-                    <div className="w-1 h-3.5 bg-gs-blue rounded-full"></div>
+                    <div className={cn(
+                      "w-1 h-3.5 rounded-full",
+                      theme === 'super' ? "bg-[#004F34]" : theme === 'customer' ? "bg-[#00D0F1]" : "bg-gs-blue"
+                    )}></div>
                     <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">추천 질문</span>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {suggestedQuestions.map((suggestion, index) => (
                       <button
                         key={index}
-                        className="px-4 py-2 bg-white hover:bg-gs-blue/5 text-gray-700 hover:text-gs-blue text-sm font-semibold rounded-xl border border-gray-100 hover:border-gs-blue/20 transition-all duration-300 shadow-sm hover:shadow-md"
+                        className={cn(
+                          "px-4 py-2 bg-white text-gray-700 text-sm font-semibold rounded-xl border border-gray-100 transition-all duration-300 shadow-sm hover:shadow-md",
+                          theme === 'super' 
+                            ? "hover:bg-[#004F34]/5 hover:text-[#004F34] hover:border-[#004F34]/20" 
+                            : theme === 'customer'
+                              ? "hover:bg-[#00D0F1]/5 hover:text-[#00D0F1] hover:border-[#00D0F1]/20"
+                              : "hover:bg-gs-blue/5 hover:text-gs-blue hover:border-gs-blue/20"
+                        )}
                         onClick={() => suggestionClick(suggestion)}
                       >
                         {suggestion}

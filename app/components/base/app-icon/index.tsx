@@ -13,6 +13,7 @@ export interface AppIconProps {
 const AppIcon: FC<AppIconProps> = ({
   size = 'medium',
   rounded = false,
+  icon,
   background,
   className,
 }) => {
@@ -25,10 +26,24 @@ const AppIcon: FC<AppIconProps> = ({
         className ?? '',
       )}
       style={{
-        background,
+        background: background || undefined,
       }}
     >
-      <img src="/logo.png" alt="App Icon" className="w-full h-full object-contain pointer-events-none" />
+      {icon
+        ? (
+          <img
+            src={icon}
+            alt="App Icon"
+            className="w-full h-full object-contain pointer-events-none"
+          />
+        )
+        : (
+          <img
+            src="/logo.png"
+            alt="App Icon"
+            className="w-full h-full object-contain pointer-events-none"
+          />
+        )}
     </span>
   )
 }

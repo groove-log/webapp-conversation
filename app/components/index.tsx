@@ -41,6 +41,10 @@ const Main: FC<IMainProps> = () => {
   const [promptConfig, setPromptConfig] = useState<PromptConfig | null>(null)
   const [inited, setInited] = useState<boolean>(false)
   const [appTitle, setAppTitle] = useState<string>(APP_INFO.title)
+  const [appIcon, setAppIcon] = useState<string>('')
+  const [appIconBackground, setAppIconBackground] = useState<string>('')
+  const [appTheme, setAppTheme] = useState<'default' | 'super'>('default')
+  const [siteInfo, setSiteInfo] = useState<typeof APP_INFO>(APP_INFO)
   // in mobile, show sidebar by click button
   const [isShowSidebar, { setTrue: showSidebar, setFalse: hideSidebar }] = useBoolean(false)
   const [visionConfig, setVisionConfig] = useState<VisionSettings | undefined>({
@@ -233,6 +237,13 @@ const Main: FC<IMainProps> = () => {
         const [conversationData, appParams, appInfo] = await Promise.all([fetchConversations(), fetchAppParams(), fetchAppInfo()])
         if (appInfo && (appInfo as any).title) {
           setAppTitle((appInfo as any).title)
+          setAppIcon((appInfo as any).icon || '')
+          setAppIconBackground((appInfo as any).icon_background || '')
+          setAppTheme((appInfo as any).theme || 'default')
+          setSiteInfo({
+            ...APP_INFO,
+            title: (appInfo as any).title,
+          })
         }
         // handle current conversation id
         const { data: conversations, error } = conversationData as { data: ConversationItem[], error: string }
@@ -705,6 +716,8 @@ const Main: FC<IMainProps> = () => {
     <div className='bg-gray-50 flex flex-col h-screen overflow-hidden'>
       <Header
         title={appTitle}
+        appIcon={appIcon}
+        appIconBackground={appIconBackground}
         isMobile={isMobile}
         onShowSideBar={showSidebar}
         onCreateNewChat={() => handleConversationIdChange('-1')}
@@ -725,7 +738,8 @@ const Main: FC<IMainProps> = () => {
             conversationName={conversationName}
             hasSetInputs={hasSetInputs}
             isPublicVersion={isShowPrompt}
-            siteInfo={APP_INFO}
+            siteInfo={siteInfo}
+            theme={appTheme}
             promptConfig={promptConfig}
             onStartChat={handleStartChat}
             canEditInputs={canEditInputs}
@@ -737,7 +751,8 @@ const Main: FC<IMainProps> = () => {
             hasSetInputs && (
               <div className='relative grow pc:w-[794px] max-w-full mobile:w-full pb-[180px] mx-auto mb-3.5' ref={chatListDomRef}>
                 <Chat
-                  chatList={chatList}
+                  theme={appTheme}
+            chatList={chatList}
                   onSend={handleSend}
                   onFeedback={handleFeedback}
                   isResponding={isResponding}

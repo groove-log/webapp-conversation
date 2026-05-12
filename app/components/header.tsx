@@ -7,12 +7,16 @@ import {
 import AppIcon from '@/app/components/base/app-icon'
 export interface IHeaderProps {
   title: string
+  appIcon?: string
+  appIconBackground?: string
   isMobile?: boolean
   onShowSideBar?: () => void
   onCreateNewChat?: () => void
 }
 const Header: FC<IHeaderProps> = ({
   title,
+  appIcon,
+  appIconBackground,
   isMobile,
   onShowSideBar,
   onCreateNewChat,
@@ -31,7 +35,7 @@ const Header: FC<IHeaderProps> = ({
         : <div className="w-9"></div>}
       <div className='flex items-center space-x-3'>
         <div className="p-1 bg-white rounded-lg shadow-sm border border-gray-100">
-          <AppIcon size="small" />
+          <AppIcon size="small" icon={appIcon} background={appIconBackground} />
         </div>
         <div className="text-base text-gray-900 font-extrabold tracking-tight">{title}</div>
       </div>

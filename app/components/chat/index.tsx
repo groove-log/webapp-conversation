@@ -21,6 +21,7 @@ import { getProcessedFiles } from '@/app/components/base/file-uploader-in-attach
 
 export interface IChatProps {
   chatList: ChatItem[]
+  theme?: 'default' | 'super'
   /**
    * Whether to display the editing area and rating status
    */
@@ -41,6 +42,7 @@ export interface IChatProps {
 
 const Chat: FC<IChatProps> = ({
   chatList,
+  theme = 'default',
   feedbackDisabled = false,
   isHideSendInput = false,
   onFeedback,
@@ -157,6 +159,7 @@ const Chat: FC<IChatProps> = ({
             return <Answer
               key={item.id}
               item={item}
+              theme={theme}
               feedbackDisabled={feedbackDisabled}
               onFeedback={onFeedback}
               isResponding={isResponding && isLast}
